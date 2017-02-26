@@ -1,6 +1,9 @@
 package com.example.jeffreyallen.highground;
 
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -122,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             JSONObject json = new JSONObject(response);
 
                             //LatLng loc = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
-                            LatLng loc = new LatLng(34.7474648, -86.5812999);
+                            LatLng loc = new LatLng(29.9593567, -90.0650777);
                             mMap.addMarker(new MarkerOptions().position(loc).title("Marker in Alabama"));
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
                         } catch (JSONException e) {
