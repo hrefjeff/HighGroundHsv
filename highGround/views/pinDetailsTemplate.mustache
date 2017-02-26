@@ -1,0 +1,13 @@
+<div>
+    <div><span># People:</span><span>{{people}}</span></div>
+    <div><span># Injured:</span><span>{{injured}}</span></div>
+    <div><span>Suggested Vehicle:</span><span>{{vehicle}}</span></div>
+    <div><span>Address:</span><span>{{address}}</span></div>
+    <div><span>Est Arrival:</span><span>{{estArrival}}</span></div>
+    <div>
+        <form id = 'takeMeThere' action = "https://maps.google.com/?q={{lat}},{{lng}}">
+            <button class = 'btn btn-success'>Take Me There</button>
+        </form>
+        <button name = 'sendMessage' class = 'btn btn-info'>Send Message</button>
+    </div>
+</div>

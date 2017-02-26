@@ -1,0 +1,27 @@
+{{#pins}}
+    <div class = 'queueItem'>
+        <input type = 'hidden' name = 'lat' value = '{{lat}}'/>
+        <input type = 'hidden' name = 'lng' value = '{{lng}}'/>
+        <div class = "panel panel-default">
+            <div class = "panel-heading {{priority}}"><a class = '{{priority}}' href = "">{{pin}}</a></div>
+        </div>
+        <div><span># People:</span><span>{{people}}</span></div>
+        <div><span># Injured:</span><span>{{injured}}</span></div>
+        <div><span>Suggested Vehicle:</span><span>{{vehicle}}</span></div>
+        <div name = 'pinImages'  style = 'display: none; margin: 10px;'>
+            <div>
+                <img height = '150' width = 'auto' src = 'http://kwtv.images.worldnow.com/images/7515459_BG1.jpg'/>
+                <img height = '150' width = 'auto' src = 'http://4901ux2g6mmvdk3no47o3nyn.wpengine.netdna-cdn.com/wp-content/uploads/2015/06/1433166655_sun-returns-to-texas-revealing-flood-damage-across-state-848x478.jpg'/>
+                <img height = '150' width = 'auto' src = 'http://twt-thumbs.washtimes.com/media/image/2014/03/24/13b27130b132550b4f0f6a70670087b6_c0-169-5430-3334_s885x516.jpg?3918365dd3b84c05095e4ce3d17ab4728d33371a'/>
+            </div>
+        </div>
+
+
+        <form id = 'takeMeThere' action = "https://www.google.com/maps/dir/Current+Location/{{lat}},{{lng}}">
+            <button class = 'btn btn-warning'>Take Me There</button>
+        </form>
+        <button name = 'sendMessage' class = 'btn btn-success'>Send Message</button>
+        <button name = 'viewImages' class = 'btn btn-info'>View Images</button>
+        <hr>
+    </div>
+{{/pins}}
