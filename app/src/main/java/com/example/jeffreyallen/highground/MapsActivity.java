@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import android.support.v4.app.NotificationCompat;
-import android.util.JsonReader;
-import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,10 +18,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.os.SystemClock;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.json.*;
-
-import static android.support.v4.app.NotificationCompat.*;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -38,7 +41,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        scheduleNotification(getNotification("Your location is risk of being flooded. We'll help you get to the nearest high ground pickup location."), 5000);
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_5:
+                scheduleNotification(getNotification("5 second delay"), 1000);
+                return true;
+            case R.id.action_10:
+                scheduleNotification(getNotification("10 second delay"), 10000);
+                return true;
+            case R.id.action_30:
+                scheduleNotification(getNotification("30 second delay"), 30000);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void scheduleNotification(Notification notification, int delay) {
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("FLOOD ALERT");
+        builder.setContentText(content);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MapsActivity.class), 0);
+        builder.setContentIntent(pi);
+
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+
+        return builder.build();
     }
 
 
@@ -68,7 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         try {
                             JSONObject json = new JSONObject(response);
 
-                            LatLng loc = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
+                            //LatLng loc = new LatLng(json.getDouble("lat"), json.getDouble("lng"));
+                            LatLng loc = new LatLng(34.7474648, -86.5812999);
                             mMap.addMarker(new MarkerOptions().position(loc).title("Marker in Alabama"));
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
                         } catch (JSONException e) {
